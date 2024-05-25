@@ -1,0 +1,42 @@
+1. Pacotes: `sudo apt update`
+2. Install Apache: `sudo apt install apache2`
+3. Install MySQL: `sudo apt install mysql-server`
+4. Senha root: `sudo mysql_secure_installation`
+5. Install PHP: `sudo apt install php libapache2-mod-php php-mysql`
+6. Restart Apache: `sudo systemctl restart apache2`
+7. Criar Database WordPress: 
+   ```
+   sudo mysql
+   CREATE DATABASE wordpress;
+   CREATE USER 'wordpressuser'@'localhost' IDENTIFIED BY 'password';
+   GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'localhost';
+   FLUSH PRIVILEGES;
+   EXIT;
+   ```
+8. Download WordPress: 
+   ```
+   cd /tmp
+   curl -LO https://wordpress.org/latest.tar.gz
+   tar xzvf latest.tar.gz
+   ```
+9. Copiar as configurações do Wordpress:
+   ```
+   cp /tmp/wordpress/wp-config-sample.php /tmp/wordpress/wp-config.php
+   sudo nano /tmp/wordpress/wp-config.php
+   ```
+10. Apontar para Banco de Dados:
+    ```
+    define( 'DB_NAME', 'wordpress' );
+    define( 'DB_USER', 'wordpressuser' );
+    define( 'DB_PASSWORD', 'password' );
+    ```
+11. Sincronizar arquivos do wordpress com o html:
+    ```
+    sudo rsync -avP /tmp/wordpress/ /var/www/html/
+    ```
+12. Set permissions WordPress:
+    ```
+    sudo chown -R www-data:www-data /var/www/html/
+    sudo chmod -R 755 /var/www/html/
+    ```
+13. sudo rm index.html (UBUNTU APENAS)
